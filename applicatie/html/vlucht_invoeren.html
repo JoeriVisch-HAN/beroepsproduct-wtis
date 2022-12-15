@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Gelre Airport</title>
+</head>
+
+<body>
+    <header></header>
+    <nav class="navigatie">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="passagier.html">overzicht passagier</a></li>
+            <li><a href="medewerker.html">overzicht medewerker</a>
+            </li>
+            <li><a href="inloggen.html">inloggen</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <form action="#" method="post">
+            <h1>vlucht toevoegen</h1>
+            <p>Maak hier een nieuwe vlucht aan.</p>
+            <label>
+                vlucht van:
+                <input type="text" pattern="[a-zA-Z]+" name="vluchtvanaf">
+            </label>
+            <label>
+                vlucht naar:
+                <input type="text" pattern="[a-zA-Z]+" name="vluchtnaar">
+            </label>
+
+            <label>
+                vlucht vertrek dag:
+                <input type="date" name="vluchtvertrek">
+            </label>
+            <label>
+                vlucht vertrek uur:
+                <input type="time" name="vluchtvertrek">
+            </label>
+            <label>
+                vlucht aankomst dag:
+                <input type="date" name="vluchtvertrek">
+            </label>
+            <label>
+                vlucht aankomst uur:
+                <input type="time" name="vluchtvertrek">
+            </label>
+
+            <label>
+                toestelnumer:
+                <input type="number" name="toestelnumer">
+            </label>
+            <label>
+                aantal personen:
+                <input type="number" name="aantal personen">
+            </label>
+            <label>
+                toevoegen:
+                <input type="submit" name="inloggen" value="toevoegen">
+            </label>
+        </form>
+    </main>
+    <footer>
+
+    </footer>
+</body>
+
+</html>
