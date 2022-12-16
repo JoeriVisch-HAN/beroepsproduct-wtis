@@ -219,7 +219,6 @@ tr:nth-child(even) {
 @media screen and (max-width: 600px) {
   .navigatie ul {
     flex-direction: column;
-    align-items: left;
   }
   article {
     display: flex;

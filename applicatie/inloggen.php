@@ -1,16 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+include("./components/header.html");
+?>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/style.css">
-    <title>Gelre Airport</title>
-</head>
-
-        <form action="#" method="post">
+<form action="#" method="post">
             <h1>login</h1>
             <p>Log hier in om verder te kunnen op de website!</p>
             <label>
@@ -33,4 +25,3 @@
                 <input type="submit" name="inloggen" value="inloggen">
             </label>
         </form>
-    </main>
