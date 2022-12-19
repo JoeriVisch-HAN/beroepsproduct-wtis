@@ -1,11 +1,5 @@
 <?php
 include("./components/header.html");
-include('db_connectie.php');
-$conn = maakVerbinding();
-
-$sql = 'select * from Gate';
-$stmt = $conn->query($sql);
-
 ?>
 
 <div class="fotohome">
