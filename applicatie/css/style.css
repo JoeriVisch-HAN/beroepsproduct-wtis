@@ -190,13 +190,13 @@ select {
   display: inline-block;
 }
 
-input[type="submit"] {
+input[type="submit"], input[type="reset"] {
   cursor: pointer;
   background-color: skyblue;
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 }
 
-input[type="submit"]:hover {
+input[type="submit"]:hover, input[type="reset"]:hover {
   background-color: turquoise;
 }
 
