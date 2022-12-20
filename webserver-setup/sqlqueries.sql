@@ -32,3 +32,5 @@ SELECT * from Vlucht
 
 select MAX(passagiernummer)+1
 from Passagier
+
+select * from Passagier

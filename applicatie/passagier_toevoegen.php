@@ -27,33 +27,34 @@ function getVluchtnummers()
     $opties = ' ';
     while ($rij = $stmt->fetch()) {
         $naamOptie = $rij['vluchtnummer'] . ' | ' . $rij['vertrektijd'] . ' | ' . $rij['naam'] . ' | ' . $rij['airport'] . ' | ' . $rij['land'];
-        $opties .= '<option name=" ' . $rij['vluchtnummer'] . '" value= " ' . $rij['vluchtnummer'] . '"> ' . $naamOptie . '</option>';
+        $opties .= '<option value= " ' . $rij['vluchtnummer'] . '"> ' . $naamOptie . '</option>';
     }
     return $opties;
 }
 
-$opties = getVluchtnummers();
-
 function getpassagiersnummer()
 {
     $conn = maakVerbinding();
-    $sql = ' select MAX(passagiernummer)+1
+    $sql = ' select MAX(passagiernummer)+1 as passagiernummer
     from Passagier';
     $stmt = $conn->query($sql);
-    $waarde = intval($stmt->fetch());
-    while()
+    
+    while($id = $stmt->fetch()){
+        $waarde = intval($id['passagiernummer']);
+    }
     return $waarde;
 }
 
 
 $conn = maakVerbinding();
-$passagiersnummer = getpassagiersnummer();
+$passagiernummer = getpassagiersnummer();
 $naam = ' ';
 $geslacht = null;
+$vluchtnummer = 5;
 $fouten[] = '';
 $melding = ' ';
-if (isset($_POST['toevoegen'])) {
-    if (!(empty($_POST['voornaam'] and empty($_POST['achternaam'])))) {
+if (isset($_POST['submit'])) {
+    if (!(empty($_POST['voornaam']) and !empty($_POST['achternaam']))) {
         $naam = $_POST['achternaam'] . ', ' . $_POST['voornaam'];
     } else {
         $fouten[] = 'geen naam';
@@ -63,8 +64,15 @@ if (isset($_POST['toevoegen'])) {
         if (!$_POST['geslacht'] == 'geen') {
             $geslacht = $_POST['geslacht'];
         }
+    } else{
+        $fouten[] = 'Geen geslacht';
     }
 
+    if(!empty($_POST['vluchtnummer'])){
+        $vluchtnummer = intval($_POST['vluchtnummer']);
+    } else{
+        $fouten[] = 'Geen vlucht!';
+    }
     if (count($fouten) > 1) {
 
         echo '<ul>';
@@ -76,13 +84,13 @@ if (isset($_POST['toevoegen'])) {
         // Insert query
         $sql = '
         insert into Passagier (passagiernummer, naam, geslacht, vluchtnummer)
-        VALUES(:passagiernummer, :naam, :geslacht, :vluchtnummer)';
+        VALUES(:passagiernummer, :naam, :geslacht, :vluchtnummer);';
         $stmt = $conn->prepare($sql);
         $succes = $stmt->execute([
-            'componistId' => $componistId,
+            'passagiernummer' => $passagiernummer,
             'naam' => $naam,
-            'geboortedatum' => $geboortedatum,
-            'schoolId' => $schoolId
+            'geslacht' => $geslacht,
+            'vluchtnummer' => $vluchtnummer
         ]);
         if ($succes) {
             $melding = 'Gegevens zijn opgeslagen in de database.';
@@ -93,8 +101,7 @@ if (isset($_POST['toevoegen'])) {
 }
 ?>
 
-
-<form action=" " method="post">
+<form action="" method="POST">
     <h1>passagier toevoegen</h1>
     <p>maak hier een nieuwe passagier aan.</p>
     <label>
@@ -116,8 +123,8 @@ if (isset($_POST['toevoegen'])) {
     </label>
     <label>
         vlucht:
-        <select>
-            <?= $opties ?>
+        <select name="vluchtnummer">
+            <?= getVluchtnummers() ?>
         </select>
     </label>
     <label> wissen:
@@ -125,7 +132,10 @@ if (isset($_POST['toevoegen'])) {
     </label>
     <label>
         toevoegen:
-        <input type="submit" name="inloggen" value="toevoegen">
+        <input type="submit" name="submit" value="submit">
+    </label>
+    <label>
+        <?=$melding?>
     </label>
 </form>
 
