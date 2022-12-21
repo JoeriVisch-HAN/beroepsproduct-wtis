@@ -1,7 +1,6 @@
 <?php
 include("./components/header.html");
 require_once('db_connectie.php');
-$vluchtgegevens = '';
 $conn = maakVerbinding();
 $sql = '
 select v.vluchtnummer, gatecode, max_aantal, max_gewicht_pp, max_totaalgewicht, vertrektijd, l.land, l.naam as vluchthaven, m.naam as maatschappijnaam
@@ -10,42 +9,77 @@ INNER JOIN Luchthaven l
 on l.luchthavencode = v.bestemming
 INNER JOIN
 Maatschappij m 
-on m.maatschappijcode = v.maatschappijcode
-';
-$stmt = $conn->query($sql);
-while ($rij = $stmt->fetch()) {
-    $vluchtgegevens .= " <tr>
-       <td> " . $rij['vluchtnummer'] .
-        "</td> <td>" . $rij['maatschappijnaam'] .
-        "</td> <td>" . $rij['vluchthaven'] .
-        "</td> <td>" . $rij['vertrektijd'] .
-        "</td> <td>" . $rij['gatecode'] .
-        "</td> <td>" . $rij['max_aantal'] .
-        "</td> <td>" . $rij['max_gewicht_pp'] .
-        "</td> <td>" . $rij['max_totaalgewicht'] . 
-        "</td> </tr>";
+on m.maatschappijcode = v.maatschappijcode';
+
+if (isset($_GET['submit'])) {
+    $vluchtnummer = null;
+    $sorteren = null;
+    if (!empty($_GET['vluchtnummer'])) {
+        $sql .= ' WHERE vluchtnummer Like :vluchtnummer';
+        $vluchtnummer = '%' . $_GET['vluchtnummer'] . '%';
+    }
+    if (!empty($_GET['sorteren']) && $_GET['sorteren'] != 'geen') {
+        $sorteren = $_GET['sorteren'];
+        $sql .= ' order by :sorteren';
+    }
+
+    $stmt = $conn->prepare($sql);
+    if ($sorteren != null && $vluchtnummer == null) {
+        $stmt->execute(['sorteren' => $sorteren]);
+
+    } else if ($sorteren == null && $vluchtnummer != null) {
+
+        $stmt->execute(['vluchtnummer' => $vluchtnummer]);
+
+    } else if ($sorteren != null && $vluchtnummer != null) {
+        $stmt->execute([
+            'vluchtnummer' => $vluchtnummer,
+            'sorteren' => $sorteren
+        ]);
+    }
+} else {
+    $stmt = $conn->query($sql);
+}
+
+function printTableData($waarde)
+{
+    $vluchtgegevens = '';
+    while ($rij = $waarde->fetch()) {
+        $vluchtgegevens .= " <tr>
+           <td> " . $rij['vluchtnummer'] .
+            "</td> <td>" . $rij['maatschappijnaam'] .
+            "</td> <td>" . $rij['vluchthaven'] .
+            "</td> <td>" . $rij['land'] .
+            "</td> <td>" . $rij['vertrektijd'] .
+            "</td> <td>" . $rij['gatecode'] .
+            "</td> <td>" . $rij['max_aantal'] .
+            "</td> <td>" . $rij['max_gewicht_pp'] .
+            "</td> <td>" . $rij['max_totaalgewicht'] .
+            "</td> </tr>";
+    }
+    return $vluchtgegevens;
 }
 ?>
 
 <div class="articlediv">
     <h1>vluchtgegevens</h1>
-    <form action="#" method="post">
+    <form action=" " method="get">
         <label>
             sorteren
-            <select>
-                <option>geen</option>
-                <option>tijd</option>
-                <option>vluchthaven</option>
-                <option>tijd en vluchthaven</option>
+            <select name="sorteren">
+                <option value="geen">geen</option>
+                <option value="vertrektijd">tijd</option>
+                <option value="bestemming">luchthaven</option>
+                <option value="vertrektijd bestemming">tijd en luchthaven</option>
             </select>
         </label>
         <label>
             vluchtnummer:
-            <input type="search" name="aantal personen">
+            <input type="search" name="vluchtnummer">
         </label>
         <label>
-            filteren:
-            <input type="submit" name="inloggen" value="filteren">
+            filteren/sorteren:
+            <input type="submit" name="submit" value="submit">
         </label>
     </form>
     <table>
@@ -78,7 +112,7 @@ while ($rij = $stmt->fetch()) {
                 maximaal aantal gewicht
             </th>
         </tr>
-      <?=$vluchtgegevens?>
+        <?= printTableData($stmt) ?>
     </table>
 </div>
 <?php
