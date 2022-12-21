@@ -9,7 +9,8 @@ INNER JOIN Luchthaven l
 on l.luchthavencode = v.bestemming
 INNER JOIN
 Maatschappij m 
-on m.maatschappijcode = v.maatschappijcode';
+on m.maatschappijcode = v.maatschappijcode
+';
 
 if (isset($_GET['submit'])) {
     $vluchtnummer = null;
@@ -18,24 +19,24 @@ if (isset($_GET['submit'])) {
         $sql .= ' WHERE vluchtnummer Like :vluchtnummer';
         $vluchtnummer = '%' . $_GET['vluchtnummer'] . '%';
     }
+
     if (!empty($_GET['sorteren']) && $_GET['sorteren'] != 'geen') {
         $sorteren = $_GET['sorteren'];
-        $sql .= ' order by :sorteren';
+
+        if ($sorteren == 'vertrektijd') {
+            $sql .= ' order by vertrektijd';
+        } else if ($sorteren == 'bestemming') {
+            $sql .= 'order by bestemming';
+        } else if ($sorteren == 'vertrektijd bestemming') {
+            $sql .= 'order by vertrektijd bestemming';
+        }
     }
 
     $stmt = $conn->prepare($sql);
-    if ($sorteren != null && $vluchtnummer == null) {
-        $stmt->execute(['sorteren' => $sorteren]);
-
-    } else if ($sorteren == null && $vluchtnummer != null) {
-
+    if($sorteren != null && $vluchtnummer == null){
+        $stmt = $conn->query($sql);
+    } else if ($vluchtnummer != null) {
         $stmt->execute(['vluchtnummer' => $vluchtnummer]);
-
-    } else if ($sorteren != null && $vluchtnummer != null) {
-        $stmt->execute([
-            'vluchtnummer' => $vluchtnummer,
-            'sorteren' => $sorteren
-        ]);
     }
 } else {
     $stmt = $conn->query($sql);
