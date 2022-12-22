@@ -12,32 +12,33 @@ Maatschappij m
 on m.maatschappijcode = v.maatschappijcode
 ';
 
-if (isset($_GET['submit'])) {
+if (isset($_GET['submit']) && (!empty($_GET['vluchtnummer']) || (!empty($_GET['sorteren']) && $_GET['sorteren'] != 'geen'))) {
     $vluchtnummer = null;
     $sorteren = null;
+
     if (!empty($_GET['vluchtnummer'])) {
-        $sql .= ' WHERE vluchtnummer Like :vluchtnummer';
+        $sql .= ' WHERE vluchtnummer Like :vluchtnummer  ';
         $vluchtnummer = '%' . $_GET['vluchtnummer'] . '%';
+        
     }
 
-    if (!empty($_GET['sorteren']) && $_GET['sorteren'] != 'geen') {
+    if (!empty($_GET['sorteren'])) {
         $sorteren = $_GET['sorteren'];
-
         if ($sorteren == 'vertrektijd') {
-            $sql .= ' order by vertrektijd';
+            $sql .= ' order by vertrektijd asc';
         } else if ($sorteren == 'bestemming') {
-            $sql .= 'order by bestemming';
+            $sql .= ' order by vluchthaven asc';
         } else if ($sorteren == 'vertrektijd bestemming') {
-            $sql .= 'order by vertrektijd, bestemming';
+            $sql .= ' order by vluchthaven, bestemming asc';
         }
     }
 
     $stmt = $conn->prepare($sql);
-    if($sorteren != null && $vluchtnummer == null){
+    if ($sorteren != null && $vluchtnummer == null) {
         $stmt = $conn->query($sql);
     } else if ($vluchtnummer != null) {
         $stmt->execute(['vluchtnummer' => $vluchtnummer]);
-    }
+    } 
 } else {
     $stmt = $conn->query($sql);
 }
