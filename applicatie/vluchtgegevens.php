@@ -28,7 +28,7 @@ if (isset($_GET['submit'])) {
         } else if ($sorteren == 'bestemming') {
             $sql .= 'order by bestemming';
         } else if ($sorteren == 'vertrektijd bestemming') {
-            $sql .= 'order by vertrektijd bestemming';
+            $sql .= 'order by vertrektijd, bestemming';
         }
     }
 
