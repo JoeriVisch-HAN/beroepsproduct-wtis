@@ -1,6 +1,5 @@
 <?php
 include("./components/header.html");
-
 require_once('db_connectie.php');
 
 function getVluchtnummers()
