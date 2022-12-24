@@ -1,5 +1,6 @@
 <?php
-include("./components/header.html");
+include("./components/header.php");
+
 ?>
 
 <form action="#" method="post">

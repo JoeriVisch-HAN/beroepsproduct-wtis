@@ -1,5 +1,5 @@
 <?php
-include("./components/header.html");
+include("./components/header.php"); 
 require_once('db_connectie.php');
 $conn = maakVerbinding();
 $sql = '

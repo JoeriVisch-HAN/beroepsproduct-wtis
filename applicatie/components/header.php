@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,7 +21,11 @@
           <li><a href="passagier.php">overzicht passagier</a></li>
           <li><a href="medewerker.php">overzicht medewerker</a>
           </li>
+          <?php if (!$_SESSION['ingelogd']) { ?>
           <li><a href="inloggen.php">inloggen</a></li>
+          <?php } else { ?>
+            <li><a href="logout.php">uitloggen</a> </li>
+            <?php }?>
         </ul>
       </nav>
     <main>

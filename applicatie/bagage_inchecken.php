@@ -1,5 +1,5 @@
 <?php
-include("./components/header.html");
+include("./components/header.php"); 
 ?>
 <form action="#" method="post">
             <h1>bagage inchecken passagier</h1>

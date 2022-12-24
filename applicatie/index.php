@@ -1,5 +1,5 @@
 <?php
-include("./components/header.html");
+include("./components/header.php"); 
 ?>
 
 <div class="fotohome">
