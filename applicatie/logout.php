@@ -1,5 +1,6 @@
 <?php
-    session_unset();
-    session_destroy();
-    header("Location: inloggen.php");
+session_start();
+session_unset();
+session_destroy();
+header("Location: inloggen.php");
 ?>
