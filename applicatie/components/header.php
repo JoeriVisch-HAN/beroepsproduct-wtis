@@ -3,6 +3,13 @@ session_start();
 if (!isset($_SESSION['uid'])) {
   $_SESSION['uid'] = null;
 }
+
+function redirect($uid){
+  if($uid == null) {
+    header("Location: inloggen.php");
+  }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -1,5 +1,6 @@
 <?php
 include("./components/header.php"); 
+redirect($_SESSION['uid']);
 require_once('db_connectie.php');
 $gegevens = '';
 function getPassagier($passagiernummer)
