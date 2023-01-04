@@ -160,8 +160,7 @@ if (isset($_POST['submit'])) {
     </label>
     <label>
         maximaal gewicht per persoon:
-        <!-- bron oninput: https://stackoverflow.com/questions/7372067/is-there-any-way-to-prevent-input-type-number-getting-negative-values -->
-        <input type="number" min="0" name="max_gewicht_pp" oninput="this.value = Math.abs(this.value)">
+        <input type="number" min="0" name="max_gewicht_pp">
     </label>
     <label>
         maximaal totaalgewicht
