@@ -2,6 +2,7 @@
 include("./components/header.php"); 
 redirect($_SESSION['uid']);
 require_once('db_connectie.php');
+require_once("./components/vluchtgegevens.php");
 $conn = maakVerbinding();
 $sql = '
 select v.vluchtnummer, gatecode, max_aantal, max_gewicht_pp, max_totaalgewicht, vertrektijd, l.land, l.naam as vluchthaven, m.naam as maatschappijnaam
@@ -44,24 +45,6 @@ if (isset($_GET['submit']) && (!empty($_GET['vluchtnummer']) || (!empty($_GET['s
     $stmt = $conn->query($sql);
 }
 
-function printTableData($waarde)
-{
-    $vluchtgegevens = '';
-    while ($rij = $waarde->fetch()) {
-        $vluchtgegevens .= " <tr>
-           <td> " . $rij['vluchtnummer'] .
-            "</td> <td>" . $rij['maatschappijnaam'] .
-            "</td> <td>" . $rij['vluchthaven'] .
-            "</td> <td>" . $rij['land'] .
-            "</td> <td>" . $rij['vertrektijd'] .
-            "</td> <td>" . $rij['gatecode'] .
-            "</td> <td>" . $rij['max_aantal'] .
-            "</td> <td>" . $rij['max_gewicht_pp'] .
-            "</td> <td>" . $rij['max_totaalgewicht'] .
-            "</td> </tr>";
-    }
-    return $vluchtgegevens;
-}
 ?>
 
 <div class="articlediv">
