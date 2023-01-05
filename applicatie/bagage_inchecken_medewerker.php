@@ -103,13 +103,14 @@ if (isset($_POST['inchecken'])) {
         $fouten[] = 'geen max';
     }
     $nieuwgewicht = $maximaalgewicht['inchecktgewicht'] + floatval($maximaalgewicht);
+
     if (floatval($gewichttotaal) <= $maximaalgewicht['max_gewicht_pp'] && $nieuwgewicht < floatval($maximaalgewicht['max_totaalgewicht'])) {
         $gewichtperkoffer = $gewichttotaal / $kofferaantal;
     } else {
         $fouten[] = 'gewicht kan niet';
     }
 
-    if (count($fouten) > 1) {
+    if (count($fouten) > 0) {
         echo '<ul>';
         foreach ($fouten as $fout) {
             echo '<li>' . $fout . '</li>';
