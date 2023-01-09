@@ -7,8 +7,6 @@ if (!isset($_SESSION['uid'])) {
 }
 $username = '';
 $password = '';
-$hash = '';
-$salt = 'asdgwqhopdfsadsdsdsfsdg342790123701239869123!@#$$%&^$^#*@^&';
 $fouten = [];
 
 if (isset($_POST['inloggen'])) {
@@ -24,8 +22,10 @@ if (isset($_POST['inloggen'])) {
 
     if (!empty($_POST['password'])) {
         $password = $_POST['password'];
-        //  $password = $password . $salt;
-        $hash = password_hash($password, PASSWORD_DEFAULT);
+        $password = strip_tags($password);
+        $password = addslashes($password);
+        $password = htmlspecialchars($password);
+        $password = htmlentities($password);
     } else {
         $fouten[] = 'geen wachtwoord';
     }
@@ -53,7 +53,7 @@ if (isset($_POST['inloggen'])) {
         if (password_verify($password, $hashcoded)) {
             echo 'Password is valid!';
             header("Location: medewerker.php");
-        } else {
+        } else { 
             $_SESSION['uid'] = null;
             echo 'Invalid password.';
         }

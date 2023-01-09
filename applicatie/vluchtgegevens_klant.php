@@ -18,9 +18,12 @@ on m.maatschappijcode = v.maatschappijcode
 
 if (isset($_GET['submit'])) {
     $passagiernummer = null;
-    $sorteren = null;
+    $vluchtnummer = null;
 
-    if (!empty($_GET['passagiernummer'])) {
+    if (!empty($_GET['vluchtnummer'])) {
+        $sql .= ' WHERE v.vluchtnummer Like :vluchtnummer  ';
+        $vluchtnummer = '%' . $_GET['vluchtnummer'] . '%'; 
+    } else if (!empty($_GET['passagiernummer'])) {
         $sql .= ' WHERE vluchtnummer IN (
             SELECT vluchtnummer
             from Passagier
@@ -32,6 +35,8 @@ if (isset($_GET['submit'])) {
     $stmt = $conn->prepare($sql);
     if ($passagiernummer != null) {
         $stmt->execute(['passagiernummer' => $passagiernummer]);
+    } else if($vluchtnummer != null){
+        $stmt->execute(['vluchtnummer' => $vluchtnummer]);
     }
 } else {
     $stmt = $conn->query($sql);
@@ -44,6 +49,10 @@ if (isset($_GET['submit'])) {
         <label>
             passagiernummer:
             <input type="search" name="passagiernummer">
+        </label>
+        <label>
+            vluchtnummer:
+            <input type="search" name="vluchtnummer">
         </label>
         <label>
             filteren/sorteren:
