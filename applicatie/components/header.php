@@ -5,7 +5,7 @@ if (!isset($_SESSION['uid'])) {
   $_SESSION['uid'] = null;
 }
 
-function redirect($uid){
+function naarInloggen($uid){
   if($uid == null) {
     header("Location: inloggen.php");
   }

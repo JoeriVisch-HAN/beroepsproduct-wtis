@@ -16,7 +16,7 @@ Maatschappij m
 on m.maatschappijcode = v.maatschappijcode
 ';
 
-if (isset($_GET['submit'])) {
+if (isset($_GET['filteren'])) {
     $passagiernummer = null;
     $vluchtnummer = null;
 
@@ -56,7 +56,7 @@ if (isset($_GET['submit'])) {
         </label>
         <label>
             filteren/sorteren:
-            <input type="submit" name="submit" value="submit">
+            <input type="submit" name="inloggen" value="inloggen">
         </label>
     </form>
     <table>

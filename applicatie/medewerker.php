@@ -1,6 +1,6 @@
 <?php
 include("./components/header.php"); 
-redirect($_SESSION['uid']);
+naarInloggen($_SESSION['uid']);
 ?>
 <div class="articlediv">
     <h1>medewerker</h1>

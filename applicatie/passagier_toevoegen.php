@@ -1,6 +1,6 @@
 <?php
 include("./components/header.php"); 
-redirect($_SESSION['uid']);
+naarInloggen($_SESSION['uid']);
 require_once('db_connectie.php');
 
 function getVluchtnummers()
@@ -45,6 +45,28 @@ function getpassagiersnummer()
     return $waarde;
 }
 
+function krijgstoelnummer($vluchtnummer){
+    $waarde = null;
+    $stoel = 1;
+    $conn = maakVerbinding();
+    $sql = ' select stoel
+    from Passagier where vluchtnummer = :vluchtnummer';
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([
+        'vluchtnummer' => $vluchtnummer
+    ]);
+    while($waarde == null){
+
+        while($id = $stmt->fetch()){
+            if(!empty($id['stoel']) && $stoel != $id['stoel']){
+                $waarde = $stoel;
+            }
+            $stoel ++;
+        }
+        
+    }
+    return $waarde;
+}
 
 $conn = maakVerbinding();
 $passagiernummer = getpassagiersnummer();
@@ -70,6 +92,7 @@ if (isset($_POST['submit'])) {
 
     if(!empty($_POST['vluchtnummer'])){
         $vluchtnummer = intval($_POST['vluchtnummer']);
+        $stoelnummer = krijgstoelnummer($vluchtnummer);
     } else{
         $fouten[] = 'Geen vlucht!';
     }
@@ -83,14 +106,15 @@ if (isset($_POST['submit'])) {
     } else {
         // Insert query
         $sql = '
-        insert into Passagier (passagiernummer, naam, geslacht, vluchtnummer)
-        VALUES(:passagiernummer, :naam, :geslacht, :vluchtnummer);';
+        insert into Passagier (passagiernummer, naam, geslacht, vluchtnummer, stoel)
+        VALUES(:passagiernummer, :naam, :geslacht, :vluchtnummer, :stoel);';
         $stmt = $conn->prepare($sql);
         $succes = $stmt->execute([
             'passagiernummer' => $passagiernummer,
             'naam' => $naam,
             'geslacht' => $geslacht,
-            'vluchtnummer' => $vluchtnummer
+            'vluchtnummer' => $vluchtnummer,
+            'stoel' => $stoelnummer
         ]);
         if ($succes) {
             $melding = 'Gegevens zijn opgeslagen in de database.';
@@ -138,7 +162,6 @@ if (isset($_POST['submit'])) {
         <?=$melding?>
     </label>
 </form>
-
 
 <?php
 include("./components/footer.html");

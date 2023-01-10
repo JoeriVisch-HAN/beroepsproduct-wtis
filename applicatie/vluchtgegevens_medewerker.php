@@ -1,6 +1,6 @@
 <?php
 include("./components/header.php"); 
-redirect($_SESSION['uid']);
+naarInloggen($_SESSION['uid']);
 require_once('db_connectie.php');
 require_once("./components/vluchtgegevens.php");
 $conn = maakVerbinding();

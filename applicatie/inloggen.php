@@ -5,27 +5,27 @@ require_once 'db_connectie.php';
 if (!isset($_SESSION['uid'])) {
     $_SESSION['uid'] = null;
 }
-$username = '';
-$password = '';
+$gebruiker = '';
+$wachtwoord = '';
 $fouten = [];
 
 if (isset($_POST['inloggen'])) {
-    if (!empty($_POST['username'])) {
-        $username = $_POST['username'];
-        $username = strip_tags($username);
-        $username = addslashes($username);
-        $username = htmlspecialchars($username);
-        $username = htmlentities($username);
+    if (!empty($_POST['gebruiker'])) {
+        $gebruiker = $_POST['gebruiker'];
+        $gebruiker = strip_tags($gebruiker);
+        $gebruiker = addslashes($gebruiker);
+        $gebruiker = htmlspecialchars($gebruiker);
+        $gebruiker = htmlentities($gebruiker);
     } else {
-        $fouten[] = 'geen username';
+        $fouten[] = 'geen gebruiker';
     }
 
-    if (!empty($_POST['password'])) {
-        $password = $_POST['password'];
-        $password = strip_tags($password);
-        $password = addslashes($password);
-        $password = htmlspecialchars($password);
-        $password = htmlentities($password);
+    if (!empty($_POST['wachtwoord'])) {
+        $wachtwoord = $_POST['wachtwoord'];
+        $wachtwoord = strip_tags($wachtwoord);
+        $wachtwoord = addslashes($wachtwoord);
+        $wachtwoord = htmlspecialchars($wachtwoord);
+        $wachtwoord = htmlentities($wachtwoord);
     } else {
         $fouten[] = 'geen wachtwoord';
     }
@@ -42,20 +42,19 @@ if (isset($_POST['inloggen'])) {
         select uid, password from medewerkers 
         where naam = :naam';
         $stmt = $conn->prepare($sql);
-        $stmt->bindparam(':naam', $username, PDO::PARAM_STR);
+        $stmt->bindparam(':naam', $gebruiker, PDO::PARAM_STR);
         $stmt->execute();
-        $hashcoded = '';
+        $hash = '';
         while ($waarde = $stmt->fetch()) {
-            $hashcoded = $waarde['password'];
+            $hash = $waarde['password'];
             $_SESSION['uid'] = $waarde['uid'];
         }
 
-        if (password_verify($password, $hashcoded)) {
-            echo 'Password is valid!';
+        if (password_verify($wachtwoord, $hash)) {
             header("Location: medewerker.php");
         } else { 
             $_SESSION['uid'] = null;
-            echo 'Invalid password.';
+            echo 'ongeldig wachtwoord.';
         }
     }
 }
@@ -68,11 +67,11 @@ if (isset($_POST['inloggen'])) {
     <p>Log hier in om verder te kunnen op de website!</p>
     <label>
         username:
-        <input type="text" name="username" pattern="[a-zA-Z]+" required>
+        <input type="text" name="gebruiker" pattern="[a-zA-Z]+" required>
     </label>
     <label>
         password:
-        <input type="password" name="password" minlength="5" required>
+        <input type="password" name="wachtwoord" minlength="5" required>
     </label>
     <label>
         inloggen:
