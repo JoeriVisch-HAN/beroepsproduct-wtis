@@ -3,7 +3,7 @@ include("./components/header.php");
 naarInloggen($_SESSION['uid']);
 require_once('db_connectie.php');
 
-function getVluchtnummers()
+function krijgVluchtnummers()
 {
     $conn = maakVerbinding();
     $sql = 'select vluchtnummer, m.naam, vertrektijd, l.naam as airport, l.land
@@ -148,7 +148,7 @@ if (isset($_POST['submit'])) {
     <label>
         vlucht:
         <select name="vluchtnummer">
-            <?= getVluchtnummers() ?>
+            <?= krijgVluchtnummers() ?>
         </select>
     </label>
     <label> wissen:

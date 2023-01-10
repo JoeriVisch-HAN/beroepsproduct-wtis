@@ -1,9 +1,9 @@
 <?php
 include("./components/header.php"); 
-redirect($_SESSION['uid']);
+naarInloggen($_SESSION['uid']);
 require_once('db_connectie.php');
 
-function getBestemming()
+function krijgBestemming()
 {
     $conn = maakVerbinding();
     $sql = 'select * from Luchthaven';
@@ -15,7 +15,7 @@ function getBestemming()
     return $opties;
 }
 
-function getGateCode()
+function krijgGateCode()
 {
     $conn = maakVerbinding();
     $sql = 'select * from Gate';
@@ -27,7 +27,7 @@ function getGateCode()
     return $opties;
 }
 
-function getMaatschappij()
+function krijgMaatschappij()
 {
     $conn = maakVerbinding();
     $sql = 'SELECT maatschappijcode, naam from Maatschappij';
@@ -39,7 +39,7 @@ function getMaatschappij()
     return $opties;
 }
 
-function getNieuweVluchtnummer()
+function krijgNieuweVluchtnummer()
 {
     $conn = maakVerbinding();
     $sql = ' SELECT MAX(vluchtnummer)+1 as vluchtnummer
@@ -53,7 +53,7 @@ function getNieuweVluchtnummer()
 }
 
 $conn = maakVerbinding();
-$vluchtnummer = getNieuweVluchtnummer();
+$vluchtnummer = krijgNieuweVluchtnummer();
 $bestemming = '';
 $gatecode = '';
 $max_aantal = 0;
@@ -144,13 +144,13 @@ if (isset($_POST['submit'])) {
     <label>
         bestemming:
         <select name="bestemming">
-            <?= getBestemming() ?>
+            <?= krijgBestemming() ?>
         </select>
     </label>
     <label>
         gatecode:
         <select name="gatecode">
-            <?= getGateCode() ?>
+            <?= krijgGateCode() ?>
         </select>
     </label>
 
@@ -173,7 +173,7 @@ if (isset($_POST['submit'])) {
     <label>
         maatschappijcode:
         <select name="maatschappijcode">
-            <?= getMaatschappij() ?>
+            <?= krijgMaatschappij() ?>
         </select>
     </label>
     <label> wissen:
